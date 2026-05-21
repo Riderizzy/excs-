@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", sans-serif;
+
+  --color-brand-dark-green: #0F2B22;
+  --color-brand-primary-green: #1ABB31;
+  --color-brand-accent-yellow: #FBCB02;
+  --color-brand-olive: #4D573E;
+  --color-brand-deep-black: #111A16;
+
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-3xl: 3rem;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-dark-green text-white font-sans antialiased selection:bg-brand-primary-green selection:text-brand-dark-green;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight leading-tight;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+
+  .glass-dark {
+    @apply bg-brand-deep-black/40 backdrop-blur-xl border border-white/5;
+  }
+
+  .text-glow-green {
+    text-shadow: 0 0 20px rgba(26, 187, 49, 0.4);
+  }
+
+  .text-glow-yellow {
+    text-shadow: 0 0 20px rgba(251, 203, 2, 0.4);
+  }
+
+  .ambient-light {
+    @apply absolute pointer-events-none rounded-full blur-[120px] opacity-20;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-brand-dark-green;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-brand-olive/50 rounded-full hover:bg-brand-primary-green transition-colors;
+}
