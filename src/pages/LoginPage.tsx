@@ -1,12 +1,23 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ExcserviceLogo } from '../components/ExcserviceLogo';
-import { ArrowRight, Mail, Lock, Chrome, Eye, EyeOff, ChevronLeft } from 'lucide-react';
+import { ArrowRight, Mail, Lock, Chrome, Eye, EyeOff, ChevronLeft, Plus } from 'lucide-react';
 
 export default function LoginPage() {
   const [mode, setMode] = useState<'selection' | 'email'>('selection');
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+
+  const handleSignIn = (e: FormEvent) => {
+    e.preventDefault();
+    if (email.toLowerCase().includes('admin')) {
+      navigate('/dashboard/admin');
+    } else {
+      navigate('/dashboard/user');
+    }
+  };
 
   return (
     <motion.div
@@ -35,22 +46,32 @@ export default function LoginPage() {
                 className="space-y-4"
               >
                 <button 
-                  className="w-full bg-white text-brand-dark-green py-5 rounded-2xl font-bold uppercase tracking-widest text-[11px] flex items-center justify-center gap-3 hover:bg-brand-primary-green transition-all shadow-xl shadow-white/5"
+                  onClick={() => navigate('/book')}
+                  className="w-full bg-brand-primary-green text-brand-dark-green py-5 rounded-2xl font-bold uppercase tracking-widest text-[11px] flex items-center justify-center gap-3 hover:bg-brand-accent-yellow transition-all"
                 >
-                  <Chrome size={18} /> Sign in with Google
+                  <Plus className="w-4 h-4" /> Book as Guest
                 </button>
 
                 <div className="relative py-4">
                   <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/5"></div></div>
-                  <div className="relative flex justify-center text-[10px] uppercase"><span className="bg-[#0f0f0f] px-4 text-white/20 tracking-widest font-bold">Or</span></div>
+                  <div className="relative flex justify-center text-[10px] uppercase"><span className="bg-[#0f0f0f] px-4 text-white/20 tracking-widest font-bold">Or Sign In</span></div>
                 </div>
 
-                <button 
-                  onClick={() => setMode('email')}
-                  className="w-full bg-white/5 border border-white/5 text-white py-5 rounded-2xl font-bold uppercase tracking-widest text-[11px] flex items-center justify-center gap-3 hover:bg-white/10 transition-all"
-                >
-                  <Mail size={18} /> Sign in with Email
-                </button>
+                <div className="space-y-4 pt-2">
+                  <button 
+                    onClick={() => navigate('/dashboard/user')}
+                    className="w-full bg-white text-brand-dark-green py-5 rounded-2xl font-bold uppercase tracking-widest text-[11px] flex items-center justify-center gap-3 hover:bg-brand-primary-green transition-all shadow-xl shadow-white/5 shadow-none"
+                  >
+                    <Chrome size={18} /> Sign in with Google
+                  </button>
+
+                  <button 
+                    onClick={() => setMode('email')}
+                    className="w-full bg-white/5 border border-white/5 text-white py-5 rounded-2xl font-bold uppercase tracking-widest text-[11px] flex items-center justify-center gap-3 hover:bg-white/10 transition-all"
+                  >
+                    <Mail size={18} /> Sign in with Email
+                  </button>
+                </div>
               </motion.div>
             ) : (
               <motion.div
@@ -67,7 +88,7 @@ export default function LoginPage() {
                   <span className="text-[10px] font-bold uppercase tracking-widest">Back</span>
                 </button>
 
-                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-6" onSubmit={handleSignIn}>
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-white/40 ml-4">Email Address</label>
                     <div className="relative">
@@ -75,6 +96,9 @@ export default function LoginPage() {
                       <input 
                         type="email" 
                         placeholder="tobi@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
                         className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-14 pr-6 focus:border-brand-primary-green outline-none transition-all placeholder:text-white/10 text-white"
                       />
                     </div>
@@ -92,6 +116,7 @@ export default function LoginPage() {
                       <input 
                         type={showPassword ? 'text' : 'password'} 
                         placeholder="••••••••"
+                        required
                         className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-14 pr-14 focus:border-brand-primary-green outline-none transition-all placeholder:text-white/10 text-white"
                       />
                       <button 
@@ -104,7 +129,10 @@ export default function LoginPage() {
                     </div>
                   </div>
 
-                  <button className="w-full bg-brand-primary-green text-brand-dark-green py-5 rounded-2xl font-bold uppercase tracking-widest text-[11px] flex items-center justify-center gap-3 hover:bg-brand-accent-yellow transition-all shadow-xl shadow-brand-primary-green/20">
+                  <button 
+                    type="submit"
+                    className="w-full bg-brand-primary-green text-brand-dark-green py-5 rounded-2xl font-bold uppercase tracking-widest text-[11px] flex items-center justify-center gap-3 hover:bg-brand-accent-yellow transition-all shadow-xl shadow-brand-primary-green/20"
+                  >
                     Sign In <ArrowRight size={16} />
                   </button>
                 </form>
